@@ -11,10 +11,10 @@ int myrand(int min, int max) {
   return uniform_int_distribution<>(min,max)(rnd);
 }
 void phil(int ph, mutex& tryer, mutex& ma, mutex& mb, mutex& mo, unique_ptr<bool>& left, unique_ptr<bool>& ready, unique_ptr<std::condition_variable>& w1, unique_ptr<std::condition_variable>& w2, unique_ptr<int>& current, unique_ptr<bool[]>& readies) {
-  for (;;) {  // prevent thread from termination
+  for (;;) {
     int duration = myrand(200, 800);
     {
-      // Block { } limits scope of lock
+      
       lock_guard<mutex> gmo(mo);
       cout<<ph<<" thinks "<<duration<<"ms\n";
     }
@@ -24,7 +24,7 @@ void phil(int ph, mutex& tryer, mutex& ma, mutex& mb, mutex& mo, unique_ptr<bool
       cout<<"\t\t"<<ph<<" is hungry\n";
     }
     {
-      int hungryDuration = myrand(200, 5000);
+      int hungryDuration = myrand(200, 800);
      this_thread::sleep_for(chrono::milliseconds(hungryDuration));
       {
       lock_guard<mutex> gmo(mo);
@@ -65,7 +65,7 @@ void phil(int ph, mutex& tryer, mutex& ma, mutex& mb, mutex& mo, unique_ptr<bool
   }
 }
 int main() {
-  cout<<"dining Philosophers C++11 with Resource hierarchy\n";
+  cout<<"Fair dining Philosophers C++11 with Resource hierarchy\n";
   mutex m1, m2, m3;   // 3 forks are 3 mutexes
   mutex mo;           // for proper output
   mutex tryer;
